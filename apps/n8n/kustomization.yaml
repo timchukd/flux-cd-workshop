@@ -11,6 +11,5 @@ resources:
   - 08-resourcequota-limited.yaml
   - 09-hpa.yaml
   - 10-pdb.yaml
-  - 11-stress-job.yaml
   - 12-backup-cronjob.yaml
 
