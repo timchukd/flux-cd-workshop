@@ -47,6 +47,5 @@ spec:
       protocol: TCP
       name: dragonfly
   selector:
-    app: dragonfly
-    dragonfly.io/name: n8n-dragonfly
+    app: n8n-dragonfly
   type: ClusterIP
