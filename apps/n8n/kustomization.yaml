@@ -4,7 +4,7 @@ resources:
   - 01-namespace.yaml
   - 02-postgres.yaml
   - 03-configmap.yaml
-  - 04-redis.yaml
+  - 04-dragonfly.yaml
   - 05-n8n-main.yaml
   - 06-ingress.yaml
   - 07-n8n-worker.yaml

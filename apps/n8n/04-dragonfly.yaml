@@ -1,0 +1,52 @@
+---
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  name: n8n-dragonfly
+  namespace: n8n-workshop
+spec:
+  replicas: 2
+  image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.23.1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  args:
+    - --proactor_threads=1
+    - --cache_mode=true
+    - --maxmemory=256mb
+  snapshot:
+    dir: /data
+    cron: "0 */6 * * *"  # Snapshot every 6 hours
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                    - dragonfly
+            topologyKey: kubernetes.io/hostname
+---
+# Service for backward compatibility with Redis
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: n8n-workshop
+spec:
+  ports:
+    - port: 6379
+      targetPort: 6379
+      protocol: TCP
+      name: dragonfly
+  selector:
+    app: dragonfly
+    dragonfly.io/name: n8n-dragonfly
+  type: ClusterIP
